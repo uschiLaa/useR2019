@@ -271,9 +271,11 @@ class: center
 ## Thanks!
 
 ```{r, out.width='45%', out.height='45%', autoplay=FALSE}
-knitr::include_graphics("gifs/flyingBirds.gif", )
+knitr::include_graphics("gifs/flyingBirds.gif")
 ```
 
 .largeish[This work was done in collaboration with Dianne Cook.]
+
+.largeish[Thanks to Nick Tierney for feedback on the package.]
 
 .largeish[My slides are made with R markdown using xaringan and the Kunoichi theme.]
