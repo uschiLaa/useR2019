@@ -261,16 +261,73 @@ class: split-50
 ]]
 
 ---
-maybe video demonstration of the app?
+# galahr demo
+
+
+.center[
+```{r}
+mp4_vid("gifs/demo.mp4", 1000)
+```
+]
 
 ---
-maybe some techincal details? e.g. showing how plotlyProxy is used for updating, how event data is used for brushing
+# Behind the scenes
+
+.large[Interactive and dynamic functionalities rely on shiny observers, plotly event data and the plotly proxy interface]
+
+<br>
+
+.large[__Example:__ Updating marker position for projected data points and the projected hypercube for each new plane in the interpolated tour path]
+
+```{r, eval=FALSE, echo=TRUE}
+plotly::plotlyProxy("tour", session) %>%
+  plotly::plotlyProxyInvoke("restyle",
+                            list(x = list(rv$cdata$V1),
+                                 y = list(rv$cdata$V2)),
+                            list(2)) %>%
+  plotly::plotlyProxyInvoke("restyle",
+                            list(x = list(rv$cubeLine$V1),
+                                 y = list(rv$cubeLine$V2)),
+                            list(1))
+```
+
+
+
+---
+
+# Try yourself!
+
+<br>
+
+
+``` {r, eval=FALSE, echo=TRUE}
+
+# install.packages("devtools")
+devtools::install_github("uschiLaa/galahr")
+
+library(galahr)
+## launching the app with the default dataset
+launchApp()
+## launching the app with a different dataset
+launchApp(GW170817)
+```
+
+<br>
+
+.large[See FIXME LINK for more documentation]
+
+<br>
+
+.large[CRAN release coming soon!]
+
+
+
 
 ---
 class: center
 ## Thanks!
 
-```{r, out.width='45%', out.height='45%', autoplay=FALSE}
+```{r, out.width='40%', out.height='40%', autoplay=FALSE}
 knitr::include_graphics("gifs/flyingBirds.gif")
 ```
 
