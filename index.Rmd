@@ -218,7 +218,7 @@ class: middle center bg-main1
 # galahr
 ### A GUI to assist learning about high dimensions in R
 
-ADD link to webpage here
+### https://uschilaa.github.io/galahr/
 
 ---
 layout: false
@@ -314,7 +314,7 @@ launchApp(GW170817)
 
 <br>
 
-.large[See FIXME LINK for more documentation]
+.large[See https://uschilaa.github.io/galahr/ for more documentation]
 
 <br>
 

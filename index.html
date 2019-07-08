@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Visualising high-dimensional data</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Ursula Laa" />
+    <meta name="date" content="2019-11-07" />
+    <link href="libs/remark-css/kunoichi.css" rel="stylesheet" />
+    <link href="libs/remark-css/ninjutsu.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+
+layout: false
+class: split-33 with-thick-border border-black
+
+&lt;style type="text/css"&gt;
+/* custom.css */
+:root{
+  --main-color1: #2f4c7a;
+  --main-color2: #bcbddc;
+  --main-color3: #efedf5;
+  --main-color4: #9DDAE5;
+  --text-color3: black;
+  --text-color4: black;
+  --code-inline-color: #4e5054;
+  --link-color: #006CAB;
+  --logo: url(http://www.fragiletoagile.com.au/wp-content/uploads/2018/02/monash-university-logo-transparent.png);
+}
+.huge { font-size: 300% }
+.large { font-size: 150% }
+.largeish { font-size: 120% }
+.summarystyle { font-size: 150%;
+  line-height:150%;}
+&lt;/style&gt;
+
+
+
+.column[.bottom_abs.content[
+&lt;img src="images/monash-university-logo-transparent.png" width="70%"&gt;
+]]
+
+.column.bg-main1[.content.vmiddle[.center[
+
+
+# Visualising high-dimensional data
+
+
+### New developments of the tourr package using Shiny and plotly
+&lt;br&gt;
+&lt;br&gt;
+
+# Ursula Laa
+
+
+### School of Physics and Astronomy
+### &amp;
+### Department of Econometrics and Business Statistics
+
+]]]
+
+---
+class: center
+background-image: url("images/cms_event_display.jpg")
+background-size: contain
+
+
+&lt;br&gt;
+
+--
+.large[
+&lt;div class="white"&gt;
+Particle physics experiments are highly complex
+&lt;/div&gt;
+]
+&lt;br&gt;
+
+
+--
+.large[
+&lt;div class="white"&gt;
+We make sense of them using computational tools, e.g. simulations and global fits
+&lt;/div&gt;
+]
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+--
+.large[
+&lt;div class="white"&gt;
+Visualisation is playing an important role in understanding our results
+&lt;/div&gt;
+]
+&lt;br&gt;
+
+
+--
+.large[
+&lt;div class="white"&gt;
+Generally we reduce dimensionality and look at one or two dimensional visualisations
+&lt;/div&gt;
+]
+
+---
+
+# Example: PDFSense data
+
+&lt;br&gt;
+
+.large[
+__PDFSense__ [arXiv:1803.02777] aims to study the sensitivity of hadronic experiments to nucleon structure, encoded in "fit residuals" (defining a 56 dimensional parameter space)
+]
+&lt;br&gt;
+--
+
+.large[__Objective__: by studying the fit residuals we learn about
+* grouping: show how different types of measurements constrain different directions in parameter space
+* relevance to the fit: the residuals encode the sensitivity of the fit to single measurements, so finding observables that are different from the main distribution (i.e. all the other measurements) means finding those which are expected to be important in future fits
+]
+&lt;br&gt;
+--
+
+.large[Visualisation is a great way of addressing these questions!&lt;br&gt;(see [arXiv:1806.09742])]
+
+---
+layout: false
+class: split-33
+
+.column[.content[
+# Using PCA
+&lt;br&gt;
+
+
+.largeish[To reduce dimensionality we use principal component analysis]
+
+&lt;br&gt;
+.largeish[As an example we can look at a subset of the data to compare similar measurements along the first two principal components]
+
+&lt;br&gt;
+.largeish[This reveals some interesting features (especially for the CMS8 measurements)]
+
+&lt;br&gt;
+.largeish[But in this case the first four principal components contain considerable variance!]
+
+&lt;br&gt;
+.largeish[Let's use the grand tour to look at the four dimensional space!]
+
+]]
+
+.column[.content.center.vmiddle[&lt;img src="images/PC1_PC2_jets.pdf" width="70%"&gt;
+]]
+
+---
+layout: false
+class: split-33
+
+.column[.content[
+
+# Grand tour animation
+ &lt;br&gt;
+
+```r
+library(tourr)
+animate(PCApoints,
+        tour_path = grand_tour(),
+        display =
+          display_groupxy(
+            group_by = exp,
+            gp_legend = TRUE,
+            pch = pch
+            )
+        )
+```
+
+.largeish[Great for more detailed comparison, and easy to pick out multivariate outliers!]
+
+.largeish[Finding specific points and highlighting them (as done here with pch) is a lot of work, can we instead make it interactive and allow for tooltip information and brushing of points?]
+
+]]
+
+.column[.content.vmiddle[
+&lt;img src="gifs/jetCluster.gif" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+]]
+
+---
+
+
+class: middle center bg-main1
+# galahr
+### A GUI to assist learning about high dimensions in R
+
+### https://uschilaa.github.io/galahr/
+
+---
+layout: false
+class: split-50
+
+.column[.content[
+
+# Building a GUI for `tourr`
+
+&lt;br&gt;
+
+.large[__Easy to use__:
+- file upload
+- selecting amongst many tour and display types
+- different projection pursuit indexes for the guided tour
+- ...
+]
+
+
+.large[__Interactive features__:
+- moving along  the tour path (e.g. for backtracking)
+- linked brushing
+- tooltip information about input parameters on each point
+- local tour around current viewing plane
+- ...
+]
+]]
+
+--
+.column[.content.vmiddle.center[
+&lt;img src="images/tourr.png" width="20%"&gt;
+&lt;br&gt;
+.huge[+]
+&lt;br&gt;
+&lt;img src="images/shiny.png" width="20%"&gt;
+&lt;br&gt;
+.huge[+]
+&lt;br&gt;
+&lt;img src="images/plotly.png" width="20%"&gt;
+]]
+
+---
+# galahr demo
+
+
+.center[
+<video width="1000" autoplay>
+        <source src="gifs/demo.mp4" type="video/mp4">
+      </video>
+]
+
+---
+# Behind the scenes
+
+.large[Interactive and dynamic functionalities rely on shiny observers, plotly event data and the plotly proxy interface]
+
+&lt;br&gt;
+
+.large[__Example:__ Updating marker position for projected data points and the projected hypercube for each new plane in the interpolated tour path]
+
+
+```r
+plotly::plotlyProxy("tour", session) %&gt;%
+  plotly::plotlyProxyInvoke("restyle",
+                            list(x = list(rv$cdata$V1),
+                                 y = list(rv$cdata$V2)),
+                            list(2)) %&gt;%
+  plotly::plotlyProxyInvoke("restyle",
+                            list(x = list(rv$cubeLine$V1),
+                                 y = list(rv$cubeLine$V2)),
+                            list(1))
+```
+
+
+
+---
+
+# Try yourself!
+
+&lt;br&gt;
+
+
+
+```r
+# install.packages("devtools")
+devtools::install_github("uschiLaa/galahr")
+
+library(galahr)
+## launching the app with the default dataset
+launchApp()
+## launching the app with a different dataset
+launchApp(GW170817)
+```
+
+&lt;br&gt;
+
+.large[See https://uschilaa.github.io/galahr/ for more documentation]
+
+&lt;br&gt;
+
+.large[CRAN release coming soon!]
+
+
+
+
+---
+class: center
+## Thanks!
+
+&lt;img src="gifs/flyingBirds.gif" width="40%" height="40%" style="display: block; margin: auto;" /&gt;
+
+.largeish[This work was done in collaboration with Dianne Cook.]
+
+.largeish[Thanks to Nick Tierney for feedback on the package.]
+
+.largeish[My slides are made with R markdown using xaringan and the Kunoichi theme.]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="libs/jquery/jquery.min.js"></script>
+<script src="libs/slides.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"ratio": "16:9",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
